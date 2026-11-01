@@ -1,0 +1,17 @@
+jalon,horodatage,modele,famille,entree,statut,epochs,lr,batch,seed,params,t_epoque_s,latence_ms,f1_macro_val,sens_fa95_val,remarque,f1_macro_test,sens_fa95_test
+4,2026-11-01 09:56:58,RNN simple (brut),RNN brut,brut,référence,12.0,0.001,64.0,42.0,1253.0,8.5,3292.09,0.2052,0.063,"SimpleRNN(32) sur 1250 pas, référence",,
+4,2026-11-01 09:58:20,LSTM (brut),RNN brut,brut,référence,15.0,0.001,64.0,42.0,4517.0,4.77,25.69,0.5053,0.2521,"LSTM(32) sur 1250 pas, référence",,
+4,2026-11-01 10:01:00,RNN simple lr=1e-2 (essai),RNN brut,brut,essai,6.0,0.01,64.0,42.0,1253.0,8.37,3301.42,0.1699,0.0672,Essai : lr x10 pour compenser la lenteur d'apprentissage du RNN simple ; ne règle pas la disparition du gradient,,
+4,2026-11-01 10:02:18,CNN seul,CNN,brut,référence,30.0,0.001,64.0,42.0,174021.0,1.98,14.26,0.9706,1.0,"même tronc convolutif que l'hybride, Flatten+Dense",,
+4,2026-11-01 10:03:08,Hybride CNN+GRU,Hybride,brut,référence,27.0,0.001,64.0,42.0,23653.0,1.48,19.02,0.9966,1.0,tronc CNN (÷16) + GRU(32),,
+4,2026-11-01 10:04:02,Hybride CNN+LSTM,Hybride,brut,référence,30.0,0.001,64.0,42.0,26661.0,1.5,22.89,0.994,1.0,tronc CNN (÷16) + LSTM(32) ; comparaison LSTM/GRU,,
+4,2026-11-01 10:05:11,GRU battements (masqué),Battements,beats,référence,60.0,0.001,64.0,42.0,4677.0,0.98,15.36,0.946,0.9622,"Masking(0)+GRU(32)+Dense(32) sur 40 x (RR, amp)",,
+4,2026-11-01 10:06:19,GRU battements sans masque (essai),Battements,beats,essai,60.0,0.001,64.0,42.0,4677.0,0.96,12.07,0.9298,0.8992,Ablation : même modèle sans Masking ; le GRU doit deviner où s'arrête la suite,,
+4,2026-11-01 10:07:18,Hybride CNN+GRU [graine 1],Hybride,brut,stabilité,30.0,0.001,64.0,1.0,23653.0,1.48,19.56,0.9979,1.0,répétition de graine,,
+4,2026-11-01 10:08:15,Hybride CNN+GRU [graine 2],Hybride,brut,stabilité,30.0,0.001,64.0,2.0,23653.0,1.55,20.98,0.9966,1.0,répétition de graine,,
+4,2026-11-01 10:09:09,Hybride CNN+GRU [graine 3],Hybride,brut,stabilité,29.0,0.001,64.0,3.0,23653.0,1.56,24.07,0.9934,1.0,répétition de graine,,
+4,2026-11-01 10:10:16,GRU battements (masqué) [graine 1],Battements,beats,stabilité,60.0,0.001,64.0,1.0,4677.0,0.94,13.8,0.9271,0.958,répétition de graine,,
+4,2026-11-01 10:11:25,GRU battements (masqué) [graine 2],Battements,beats,stabilité,60.0,0.001,64.0,2.0,4677.0,0.96,14.97,0.9446,0.9496,répétition de graine,,
+4,2026-11-01 10:12:38,GRU battements (masqué) [graine 3],Battements,beats,stabilité,60.0,0.001,64.0,3.0,4677.0,1.06,14.42,0.9481,0.9748,répétition de graine,,
+4,2026-11-01 10:12:38,Hybride CNN+GRU,Hybride,brut,retenu,,,,,,,,0.9966,,sélection sur validation (règle F1 puis latence),,
+4,2026-11-01 10:12:39,Hybride CNN+GRU,Hybride,brut,test (unique),,,,,,,,,,"évaluation finale du jalon 4, une seule fois",0.9959,1.0

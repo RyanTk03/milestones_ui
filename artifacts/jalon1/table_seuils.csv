@@ -1,0 +1,5 @@
+,Seuil A (validation seule),"Seuil B (hors pli, retenu)"
+seuil,0.231,0.233
+sensibilité FA (val.),0.992,0.992
+spécificité FA (val.),0.949,0.95
+sinus non signalés (val.),0.905,0.906

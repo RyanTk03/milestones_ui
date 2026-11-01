@@ -1,0 +1,950 @@
+{
+ "mlp": {
+  "holter_val": {
+   "f1_macro": 0.9731641284612618,
+   "f1_classes": [
+    0.973,
+    0.925,
+    0.986,
+    0.987,
+    0.994
+   ],
+   "rappel_classes": [
+    0.966,
+    0.958,
+    0.979,
+    0.98,
+    1.0
+   ],
+   "sensibilite_alerte": 0.9801762114537445,
+   "fausses_alertes": 0.033632286995515695
+  },
+  "patch_val": {
+   "f1_macro": 0.6813661297745053,
+   "f1_classes": [
+    0.816,
+    0.5,
+    0.679,
+    0.875,
+    0.537
+   ],
+   "rappel_classes": [
+    0.761,
+    0.5,
+    0.837,
+    0.778,
+    0.44
+   ],
+   "sensibilite_alerte": 0.9156626506024096,
+   "fausses_alertes": 0.23880597014925373
+  },
+  "params": 3141
+ },
+ "champ_receptif": [
+  {
+   "architecture": "4 blocs k=7",
+   "RF (\u00e9ch.)": 106,
+   "RF (s)": 0.85,
+   "RF mesur\u00e9": 106,
+   "couvre 2 RR \u00e0 70 bpm (214 \u00e9ch.)": "non"
+  },
+  {
+   "architecture": "2 blocs k=7",
+   "RF (\u00e9ch.)": 22,
+   "RF (s)": 0.18,
+   "RF mesur\u00e9": 22,
+   "couvre 2 RR \u00e0 70 bpm (214 \u00e9ch.)": "non"
+  },
+  {
+   "architecture": "3 blocs k=7",
+   "RF (\u00e9ch.)": 50,
+   "RF (s)": 0.4,
+   "RF mesur\u00e9": 50,
+   "couvre 2 RR \u00e0 70 bpm (214 \u00e9ch.)": "non"
+  },
+  {
+   "architecture": "5 blocs k=7",
+   "RF (\u00e9ch.)": 218,
+   "RF (s)": 1.74,
+   "RF mesur\u00e9": 218,
+   "couvre 2 RR \u00e0 70 bpm (214 \u00e9ch.)": "oui"
+  },
+  {
+   "architecture": "6 blocs k=7",
+   "RF (\u00e9ch.)": 442,
+   "RF (s)": 3.54,
+   "RF mesur\u00e9": 442,
+   "couvre 2 RR \u00e0 70 bpm (214 \u00e9ch.)": "oui"
+  },
+  {
+   "architecture": "4 blocs k=3",
+   "RF (\u00e9ch.)": 46,
+   "RF (s)": 0.37,
+   "RF mesur\u00e9": 46,
+   "couvre 2 RR \u00e0 70 bpm (214 \u00e9ch.)": "non"
+  },
+  {
+   "architecture": "4 blocs k=15",
+   "RF (\u00e9ch.)": 226,
+   "RF (s)": 1.81,
+   "RF mesur\u00e9": 226,
+   "couvre 2 RR \u00e0 70 bpm (214 \u00e9ch.)": "oui"
+  },
+  {
+   "architecture": "4 blocs k=7 dilatations 1-2-4-8",
+   "RF (\u00e9ch.)": 526,
+   "RF (s)": 4.21,
+   "RF mesur\u00e9": 526,
+   "couvre 2 RR \u00e0 70 bpm (214 \u00e9ch.)": "oui"
+  }
+ ],
+ "cnn_val": {
+  "d4_k7_gap": {
+   "holter": {
+    "f1_macro": 0.9761936453969774,
+    "f1_classes": [
+     0.978,
+     1.0,
+     0.978,
+     0.992,
+     0.932
+    ],
+    "rappel_classes": [
+     0.985,
+     1.0,
+     0.997,
+     0.985,
+     0.878
+    ],
+    "sensibilite_alerte": 0.9713656387665198,
+    "fausses_alertes": 0.014573991031390135
+   },
+   "patch": {
+    "f1_macro": 0.5791911162299934,
+    "f1_classes": [
+     0.386,
+     0.667,
+     0.828,
+     0.5,
+     0.515
+    ],
+    "rappel_classes": [
+     0.239,
+     0.5,
+     0.953,
+     0.333,
+     1.0
+    ],
+    "sensibilite_alerte": 1.0,
+    "fausses_alertes": 0.7611940298507462
+   },
+   "params": 37077,
+   "rf": 106
+  },
+  "d2_k7_gap": {
+   "holter": {
+    "f1_macro": 0.63758499700217,
+    "f1_classes": [
+     0.581,
+     0.517,
+     0.94,
+     0.753,
+     0.398
+    ],
+    "rappel_classes": [
+     0.464,
+     0.618,
+     0.935,
+     0.677,
+     0.739
+    ],
+    "sensibilite_alerte": 0.8689427312775331,
+    "fausses_alertes": 0.5358744394618834
+   },
+   "patch": {
+    "f1_macro": 0.3498244303122352,
+    "f1_classes": [
+     0.262,
+     0.0,
+     0.878,
+     0.182,
+     0.427
+    ],
+    "rappel_classes": [
+     0.164,
+     0.0,
+     0.837,
+     0.111,
+     1.0
+    ],
+    "sensibilite_alerte": 0.927710843373494,
+    "fausses_alertes": 0.835820895522388
+   },
+   "params": 4101,
+   "rf": 22
+  },
+  "d3_k7_gap": {
+   "holter": {
+    "f1_macro": 0.914242434074372,
+    "f1_classes": [
+     0.95,
+     0.948,
+     0.979,
+     0.875,
+     0.82
+    ],
+    "rappel_classes": [
+     0.981,
+     0.992,
+     0.973,
+     0.778,
+     0.744
+    ],
+    "sensibilite_alerte": 0.9162995594713657,
+    "fausses_alertes": 0.01905829596412556
+   },
+   "patch": {
+    "f1_macro": 0.505023695197783,
+    "f1_classes": [
+     0.484,
+     0.25,
+     0.943,
+     0.364,
+     0.485
+    ],
+    "rappel_classes": [
+     0.328,
+     0.167,
+     0.953,
+     0.222,
+     1.0
+    ],
+    "sensibilite_alerte": 0.9759036144578314,
+    "fausses_alertes": 0.6716417910447762
+   },
+   "params": 15173,
+   "rf": 50
+  },
+  "d5_k7_gap": {
+   "holter": {
+    "f1_macro": 0.9947030134400554,
+    "f1_classes": [
+     0.996,
+     0.996,
+     0.993,
+     0.997,
+     0.992
+    ],
+    "rappel_classes": [
+     0.999,
+     1.0,
+     0.986,
+     0.995,
+     0.983
+    ],
+    "sensibilite_alerte": 0.9922907488986784,
+    "fausses_alertes": 0.0011210762331838565
+   },
+   "patch": {
+    "f1_macro": 0.6763021506579565,
+    "f1_classes": [
+     0.633,
+     0.375,
+     0.927,
+     0.889,
+     0.558
+    ],
+    "rappel_classes": [
+     0.463,
+     0.5,
+     0.884,
+     0.889,
+     0.96
+    ],
+    "sensibilite_alerte": 1.0,
+    "fausses_alertes": 0.5373134328358209
+   },
+   "params": 66069,
+   "rf": 218
+  },
+  "d4_k3_gap": {
+   "holter": {
+    "f1_macro": 0.9297346435732973,
+    "f1_classes": [
+     0.942,
+     0.961,
+     0.975,
+     0.98,
+     0.791
+    ],
+    "rappel_classes": [
+     0.936,
+     0.992,
+     0.99,
+     1.0,
+     0.744
+    ],
+    "sensibilite_alerte": 0.9493392070484582,
+    "fausses_alertes": 0.06390134529147982
+   },
+   "patch": {
+    "f1_macro": 0.48748059280169376,
+    "f1_classes": [
+     0.357,
+     0.143,
+     0.9,
+     0.615,
+     0.422
+    ],
+    "rappel_classes": [
+     0.224,
+     0.167,
+     0.837,
+     0.444,
+     0.92
+    ],
+    "sensibilite_alerte": 0.9759036144578314,
+    "fausses_alertes": 0.7761194029850746
+   },
+   "params": 16533,
+   "rf": 46
+  },
+  "d4_k15_gap": {
+   "holter": {
+    "f1_macro": 0.9639622071897407,
+    "f1_classes": [
+     0.967,
+     0.987,
+     0.993,
+     0.964,
+     0.909
+    ],
+    "rappel_classes": [
+     0.937,
+     0.992,
+     1.0,
+     1.0,
+     0.994
+    ],
+    "sensibilite_alerte": 0.998898678414097,
+    "fausses_alertes": 0.06278026905829596
+   },
+   "patch": {
+    "f1_macro": 0.44887002761018513,
+    "f1_classes": [
+     0.26,
+     0.5,
+     0.727,
+     0.364,
+     0.394
+    ],
+    "rappel_classes": [
+     0.149,
+     0.333,
+     0.651,
+     0.222,
+     1.0
+    ],
+    "sensibilite_alerte": 1.0,
+    "fausses_alertes": 0.8507462686567164
+   },
+   "params": 78165,
+   "rf": 226
+  },
+  "d4_k7_flat": {
+   "holter": {
+    "f1_macro": 0.9832657722751399,
+    "f1_classes": [
+     0.985,
+     0.994,
+     0.976,
+     0.99,
+     0.972
+    ],
+    "rappel_classes": [
+     0.993,
+     0.987,
+     0.959,
+     0.985,
+     0.972
+    ],
+    "sensibilite_alerte": 0.9768722466960352,
+    "fausses_alertes": 0.006726457399103139
+   },
+   "patch": {
+    "f1_macro": 0.6628454242501922,
+    "f1_classes": [
+     0.574,
+     0.5,
+     0.94,
+     0.8,
+     0.5
+    ],
+    "rappel_classes": [
+     0.403,
+     0.333,
+     0.907,
+     0.667,
+     1.0
+    ],
+    "sensibilite_alerte": 1.0,
+    "fausses_alertes": 0.5970149253731343
+   },
+   "params": 61717,
+   "rf": 106
+  },
+  "d4_k7_dil": {
+   "holter": {
+    "f1_macro": 0.9909948982002005,
+    "f1_classes": [
+     0.99,
+     0.998,
+     0.975,
+     1.0,
+     0.992
+    ],
+    "rappel_classes": [
+     0.998,
+     1.0,
+     0.952,
+     1.0,
+     0.989
+    ],
+    "sensibilite_alerte": 0.9823788546255506,
+    "fausses_alertes": 0.002242152466367713
+   },
+   "patch": {
+    "f1_macro": 0.6078921032713818,
+    "f1_classes": [
+     0.477,
+     0.348,
+     0.925,
+     0.8,
+     0.489
+    ],
+    "rappel_classes": [
+     0.313,
+     0.667,
+     0.86,
+     0.667,
+     0.92
+    ],
+    "sensibilite_alerte": 1.0,
+    "fausses_alertes": 0.6865671641791045
+   },
+   "params": 37077,
+   "rf": 526
+  },
+  "d4_k7_gap_passehaut": {
+   "holter": {
+    "f1_macro": 0.9927797166746105,
+    "f1_classes": [
+     0.996,
+     0.994,
+     0.993,
+     0.99,
+     0.992
+    ],
+    "rappel_classes": [
+     0.997,
+     1.0,
+     0.986,
+     0.985,
+     0.994
+    ],
+    "sensibilite_alerte": 0.9944933920704846,
+    "fausses_alertes": 0.0033632286995515697
+   },
+   "patch": {
+    "f1_macro": 0.7099905093324896,
+    "f1_classes": [
+     0.771,
+     0.414,
+     0.966,
+     0.8,
+     0.6
+    ],
+    "rappel_classes": [
+     0.627,
+     1.0,
+     0.977,
+     0.667,
+     0.72
+    ],
+    "sensibilite_alerte": 1.0,
+    "fausses_alertes": 0.373134328358209
+   }
+  }
+ },
+ "cnn_retenu": "d4_k7_dil",
+ "comparaison_classes": [
+  {
+   "classe": "sinusal",
+   "MLP Holter": 0.973,
+   "CNN Holter": 0.99,
+   "MLP patch": 0.816,
+   "CNN patch": 0.477
+  },
+  {
+   "classe": "FA",
+   "MLP Holter": 0.925,
+   "CNN Holter": 0.998,
+   "MLP patch": 0.5,
+   "CNN patch": 0.348
+  },
+  {
+   "classe": "ESV",
+   "MLP Holter": 0.986,
+   "CNN Holter": 0.975,
+   "MLP patch": 0.679,
+   "CNN patch": 0.925
+  },
+  {
+   "classe": "tachy sin.",
+   "MLP Holter": 0.987,
+   "CNN Holter": 1.0,
+   "MLP patch": 0.875,
+   "CNN patch": 0.8
+  },
+  {
+   "classe": "bloc AV",
+   "MLP Holter": 0.994,
+   "CNN Holter": 0.992,
+   "MLP patch": 0.537,
+   "CNN patch": 0.489
+  },
+  {
+   "classe": "F1 macro",
+   "MLP Holter": 0.973,
+   "CNN Holter": 0.991,
+   "MLP patch": 0.681,
+   "CNN patch": 0.608
+  }
+ ],
+ "calibration_bruit": {
+  "Holter (brut)": {
+   "d\u00e9rive RMS (mV)": 0.1625,
+   "bruit HF RMS (mV)": 0.033,
+   "amplitude R (mV)": 1.11,
+   "raie 50 Hz (mV)": 0.0199
+  },
+  "Holter + bruit de d\u00e9part": {
+   "d\u00e9rive RMS (mV)": 0.1344,
+   "bruit HF RMS (mV)": 0.0351,
+   "amplitude R (mV)": 0.8052,
+   "raie 50 Hz (mV)": 0.024
+  },
+  "Holter + bruit calibr\u00e9": {
+   "d\u00e9rive RMS (mV)": 0.1739,
+   "bruit HF RMS (mV)": 0.0408,
+   "amplitude R (mV)": 0.4078,
+   "raie 50 Hz (mV)": 0.0119
+  },
+  "Patch train+val (brut)": {
+   "d\u00e9rive RMS (mV)": 0.1905,
+   "bruit HF RMS (mV)": 0.0368,
+   "amplitude R (mV)": 0.4074,
+   "raie 50 Hz (mV)": 0.0111
+  }
+ },
+ "params_bruit": {
+  "gain": [
+   0.23,
+   0.48
+  ],
+  "derive_amp": [
+   0.12,
+   0.45
+  ],
+  "derive_f": [
+   0.1,
+   0.5
+  ],
+  "secteur_amp": [
+   0.0,
+   0.015
+  ],
+  "muscle_sigma": [
+   0.02,
+   0.09
+  ]
+ },
+ "ae": [
+  {
+   "mod\u00e8le": "AE_V1 (conv)",
+   "params": 31297,
+   "MSE val (bruit calibr\u00e9)": 0.3528064489364624,
+   "MSE avant d\u00e9bruitage": 1.1032487154006958,
+   "SNR avant (dB)": -0.35,
+   "SNR apr\u00e8s (dB)": 5.08,
+   "\u00e9poques": 10,
+   "dur\u00e9e (s)": 274
+  },
+  {
+   "mod\u00e8le": "AE_V2 (U-Net)",
+   "params": 96641,
+   "MSE val (bruit calibr\u00e9)": 0.3175360858440399,
+   "MSE avant d\u00e9bruitage": 1.1032487154006958,
+   "SNR avant (dB)": -0.35,
+   "SNR apr\u00e8s (dB)": 5.63,
+   "\u00e9poques": 10,
+   "dur\u00e9e (s)": 724
+  },
+  {
+   "mod\u00e8le": "AE_V2 (U-Net), bruit de d\u00e9part",
+   "params": 96641,
+   "MSE val (bruit calibr\u00e9)": 0.9102734923362732,
+   "MSE avant d\u00e9bruitage": 1.1032487154006958,
+   "SNR avant (dB)": -0.35,
+   "SNR apr\u00e8s (dB)": 0.6,
+   "\u00e9poques": 10,
+   "dur\u00e9e (s)": 669
+  }
+ ],
+ "debruitage_val": [
+  {
+   "condition": "Patch val : CNN, sans d\u00e9bruitage",
+   "F1 macro": 0.608,
+   "IC95 % patients": "[0.46 ; 0.72]",
+   "sensibilit\u00e9 alerte": 1.0,
+   "fausses alertes": 0.687,
+   "F1 par classe": [
+    0.477,
+    0.348,
+    0.925,
+    0.8,
+    0.489
+   ]
+  },
+  {
+   "condition": "Patch val : CNN apr\u00e8s AE_V1 (conv)",
+   "F1 macro": 0.907,
+   "IC95 % patients": "[0.78 ; 1.00]",
+   "sensibilit\u00e9 alerte": 1.0,
+   "fausses alertes": 0.119,
+   "F1 par classe": [
+    0.937,
+    0.667,
+    0.989,
+    1.0,
+    0.941
+   ]
+  },
+  {
+   "condition": "Patch val : CNN apr\u00e8s AE_V2 (U-Net)",
+   "F1 macro": 0.918,
+   "IC95 % patients": "[0.80 ; 1.00]",
+   "sensibilit\u00e9 alerte": 1.0,
+   "fausses alertes": 0.09,
+   "F1 par classe": [
+    0.953,
+    0.667,
+    0.989,
+    1.0,
+    0.98
+   ]
+  },
+  {
+   "condition": "Patch val : CNN apr\u00e8s AE_V2 (U-Net), bruit de d\u00e9part",
+   "F1 macro": 0.662,
+   "IC95 % patients": "[0.53 ; 0.74]",
+   "sensibilit\u00e9 alerte": 1.0,
+   "fausses alertes": 0.612,
+   "F1 par classe": [
+    0.559,
+    0.4,
+    0.94,
+    0.875,
+    0.538
+   ]
+  },
+  {
+   "condition": "Patch val : CNN entra\u00een\u00e9 sur Holter bruit\u00e9 (exploratoire)",
+   "F1 macro": 0.914,
+   "IC95 % patients": "[0.72 ; 0.96]",
+   "sensibilit\u00e9 alerte": 1.0,
+   "fausses alertes": 0.164,
+   "F1 par classe": [
+    0.911,
+    0.833,
+    0.977,
+    1.0,
+    0.847
+   ]
+  },
+  {
+   "condition": "Holter val + bruit calibr\u00e9 : CNN, sans d\u00e9bruitage",
+   "F1 macro": 0.535,
+   "IC95 % patients": "[0.47 ; 0.58]",
+   "sensibilit\u00e9 alerte": 0.988,
+   "fausses alertes": 0.684,
+   "F1 par classe": [
+    0.476,
+    0.551,
+    0.645,
+    0.662,
+    0.339
+   ]
+  },
+  {
+   "condition": "Holter val + bruit calibr\u00e9 : CNN apr\u00e8s AE_V1 (conv)",
+   "F1 macro": 0.908,
+   "IC95 % patients": "[0.89 ; 0.92]",
+   "sensibilit\u00e9 alerte": 0.907,
+   "fausses alertes": 0.036,
+   "F1 par classe": [
+    0.937,
+    0.776,
+    0.943,
+    0.948,
+    0.935
+   ]
+  },
+  {
+   "condition": "Holter val + bruit calibr\u00e9 : CNN apr\u00e8s AE_V2 (U-Net)",
+   "F1 macro": 0.929,
+   "IC95 % patients": "[0.91 ; 0.94]",
+   "sensibilit\u00e9 alerte": 0.912,
+   "fausses alertes": 0.016,
+   "F1 par classe": [
+    0.949,
+    0.784,
+    0.975,
+    0.966,
+    0.972
+   ]
+  },
+  {
+   "condition": "Holter val + bruit calibr\u00e9 : CNN apr\u00e8s AE_V2 (U-Net), bruit de d\u00e9part",
+   "F1 macro": 0.654,
+   "IC95 % patients": "[0.60 ; 0.70]",
+   "sensibilit\u00e9 alerte": 0.986,
+   "fausses alertes": 0.51,
+   "F1 par classe": [
+    0.651,
+    0.692,
+    0.756,
+    0.782,
+    0.387
+   ]
+  },
+  {
+   "condition": "Holter val propre : CNN (r\u00e9f\u00e9rence)",
+   "F1 macro": 0.991,
+   "IC95 % patients": "[0.99 ; 0.99]",
+   "sensibilit\u00e9 alerte": 0.982,
+   "fausses alertes": 0.002,
+   "F1 par classe": [
+    0.99,
+    0.998,
+    0.975,
+    1.0,
+    0.992
+   ]
+  }
+ ],
+ "ae_retenu": "AE_V2 (U-Net)",
+ "embarque": [
+  {
+   "mod\u00e8le": "CNN d4_k7_dil",
+   "params": 37077,
+   "Keras (ms/fen\u00eatre)": 3.52,
+   "TFLite float32 (Mo)": 0.162,
+   "TFLite float32 (ms)": 0.48,
+   "TFLite quantifi\u00e9 (Mo)": 0.056,
+   "TFLite quantifi\u00e9 (ms)": 0.82
+  },
+  {
+   "mod\u00e8le": "AE_V2 (U-Net)",
+   "params": 96641,
+   "Keras (ms/fen\u00eatre)": 4.53,
+   "TFLite float32 (Mo)": 0.4,
+   "TFLite float32 (ms)": 1.78,
+   "TFLite quantifi\u00e9 (Mo)": 0.114,
+   "TFLite quantifi\u00e9 (ms)": 2.09
+  }
+ ],
+ "final": {
+  "split": "test",
+  "holter": {
+   "f1_macro": 0.9940681797503114,
+   "f1_classes": [
+    0.994,
+    0.989,
+    0.995,
+    0.997,
+    0.995
+   ],
+   "rappel_classes": [
+    0.991,
+    1.0,
+    0.99,
+    1.0,
+    0.997
+   ],
+   "sensibilite_alerte": 0.9978494623655914,
+   "fausses_alertes": 0.009195402298850575,
+   "ic95": [
+    0.9885558808084073,
+    0.9981783157487909
+   ]
+  },
+  "patch_sans_debruitage": {
+   "f1_macro": 0.5360397272211693,
+   "f1_classes": [
+    0.438,
+    0.634,
+    0.827,
+    0.667,
+    0.114
+   ],
+   "rappel_classes": [
+    0.28,
+    0.874,
+    0.725,
+    0.5,
+    0.958
+   ],
+   "sensibilite_alerte": 1.0,
+   "fausses_alertes": 0.7195121951219512,
+   "ic95": [
+    0.4820241044997433,
+    0.5868967337776859
+   ]
+  },
+  "patch_avec_debruitage": {
+   "f1_macro": 0.9223345496648147,
+   "f1_classes": [
+    0.945,
+    0.882,
+    0.965,
+    0.978,
+    0.842
+   ],
+   "rappel_classes": [
+    0.927,
+    0.904,
+    0.979,
+    0.973,
+    1.0
+   ],
+   "sensibilite_alerte": 0.957983193277311,
+   "fausses_alertes": 0.07317073170731707,
+   "ic95": [
+    0.8229051338090964,
+    0.951216448478893
+   ]
+  },
+  "confusion_holter": [
+   [
+    862,
+    5,
+    0,
+    1,
+    2
+   ],
+   [
+    0,
+    280,
+    0,
+    0,
+    0
+   ],
+   [
+    2,
+    0,
+    203,
+    0,
+    0
+   ],
+   [
+    0,
+    0,
+    0,
+    152,
+    0
+   ],
+   [
+    0,
+    1,
+    0,
+    0,
+    292
+   ]
+  ],
+  "confusion_patch_sans": [
+   [
+    161,
+    137,
+    3,
+    0,
+    273
+   ],
+   [
+    0,
+    173,
+    0,
+    0,
+    25
+   ],
+   [
+    0,
+    5,
+    103,
+    0,
+    34
+   ],
+   [
+    0,
+    32,
+    1,
+    56,
+    23
+   ],
+   [
+    0,
+    1,
+    0,
+    0,
+    23
+   ]
+  ],
+  "confusion_patch_avec": [
+   [
+    532,
+    26,
+    7,
+    0,
+    9
+   ],
+   [
+    17,
+    179,
+    0,
+    2,
+    0
+   ],
+   [
+    3,
+    0,
+    139,
+    0,
+    0
+   ],
+   [
+    0,
+    3,
+    0,
+    109,
+    0
+   ],
+   [
+    0,
+    0,
+    0,
+    0,
+    24
+   ]
+  ]
+ }
+}

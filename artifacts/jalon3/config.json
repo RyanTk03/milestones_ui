@@ -1,0 +1,264 @@
+{
+ "retenu": "Holter augment\u00e9 + ajustement fin",
+ "cle_retenue": "strat06",
+ "noms": [
+  "sinusal",
+  "FA",
+  "ESV",
+  "tachy.",
+  "BAV2"
+ ],
+ "fc_mu": 82.84231567382812,
+ "fc_sd": 22.326162338256836,
+ "params_aug": {
+  "gain": [
+   0.2,
+   1.0
+  ],
+  "derive_max": 0.16376076554614757,
+  "bruit_max": 0.07336049099481694,
+  "secteur_max": 0.020967379212379456
+ },
+ "adapt": {
+  "extraction": [
+   40,
+   0.01
+  ],
+  "ft_complet": [
+   20,
+   0.001
+  ],
+  "ft_partiel": [
+   20,
+   0.001
+  ],
+  "scratch": [
+   60,
+   0.001
+  ]
+ },
+ "lam_star": 0.1,
+ "lambdas": [
+  0.1,
+  0.5,
+  2.0
+ ],
+ "seeds": [
+  0,
+  1
+ ],
+ "modeles": {
+  "strat00": {
+   "titre": "Holter tel quel",
+   "fichier": "strat00.keras",
+   "famille": "strat\u00e9gie",
+   "multi": false,
+   "spec": {
+    "mode": "zs",
+    "holter": "base",
+    "lam": 0.0
+   }
+  },
+  "strat01": {
+   "titre": "Patch seul (depuis z\u00e9ro)",
+   "fichier": "strat01.keras",
+   "famille": "strat\u00e9gie",
+   "multi": false,
+   "spec": {
+    "mode": "scratch",
+    "holter": null,
+    "lam": 0.0
+   }
+  },
+  "strat02": {
+   "titre": "Extraction de caract\u00e9ristiques",
+   "fichier": "strat02.keras",
+   "famille": "strat\u00e9gie",
+   "multi": false,
+   "spec": {
+    "mode": "extraction",
+    "holter": "base",
+    "lam": 0.0
+   }
+  },
+  "strat03": {
+   "titre": "Ajustement fin partiel",
+   "fichier": "strat03.keras",
+   "famille": "strat\u00e9gie",
+   "multi": false,
+   "spec": {
+    "mode": "ft_partiel",
+    "holter": "base",
+    "lam": 0.0
+   }
+  },
+  "strat04": {
+   "titre": "Ajustement fin complet",
+   "fichier": "strat04.keras",
+   "famille": "strat\u00e9gie",
+   "multi": false,
+   "spec": {
+    "mode": "ft_complet",
+    "holter": "base",
+    "lam": 0.0
+   }
+  },
+  "strat05": {
+   "titre": "Holter augment\u00e9, tel quel",
+   "fichier": "strat05.keras",
+   "famille": "strat\u00e9gie",
+   "multi": false,
+   "spec": {
+    "mode": "zs",
+    "holter": "aug",
+    "lam": 0.0
+   }
+  },
+  "strat06": {
+   "titre": "Holter augment\u00e9 + ajustement fin",
+   "fichier": "strat06.keras",
+   "famille": "strat\u00e9gie",
+   "multi": false,
+   "spec": {
+    "mode": "ft_complet",
+    "holter": "aug",
+    "lam": 0.0
+   }
+  },
+  "strat07": {
+   "titre": "Patch seul multit\u00e2che (\u03bb*)",
+   "fichier": "strat07.keras",
+   "famille": "strat\u00e9gie",
+   "multi": true,
+   "spec": {
+    "mode": "scratch",
+    "holter": null,
+    "lam": 0.1
+   }
+  },
+  "strat08": {
+   "titre": "Aug + multit\u00e2che, tel quel",
+   "fichier": "strat08.keras",
+   "famille": "strat\u00e9gie",
+   "multi": true,
+   "spec": {
+    "mode": "zs",
+    "holter": "augmt",
+    "lam": 0.0
+   }
+  },
+  "strat09": {
+   "titre": "Aug + multit\u00e2che + ajustement fin",
+   "fichier": "strat09.keras",
+   "famille": "strat\u00e9gie",
+   "multi": true,
+   "spec": {
+    "mode": "ft_complet",
+    "holter": "augmt",
+    "lam": 0.1
+   }
+  },
+  "strat10": {
+   "titre": "Multit\u00e2che \u03bb=0.1, tel quel",
+   "fichier": "strat10.keras",
+   "famille": "strat\u00e9gie",
+   "multi": true,
+   "spec": {
+    "mode": "zs",
+    "holter": "mt0.1",
+    "lam": 0.0
+   }
+  },
+  "strat11": {
+   "titre": "Multit\u00e2che \u03bb=0.1 + ajustement fin",
+   "fichier": "strat11.keras",
+   "famille": "strat\u00e9gie",
+   "multi": true,
+   "spec": {
+    "mode": "ft_complet",
+    "holter": "mt0.1",
+    "lam": 0.1
+   }
+  },
+  "strat12": {
+   "titre": "Multit\u00e2che \u03bb=0.5, tel quel",
+   "fichier": "strat12.keras",
+   "famille": "strat\u00e9gie",
+   "multi": true,
+   "spec": {
+    "mode": "zs",
+    "holter": "mt0.5",
+    "lam": 0.0
+   }
+  },
+  "strat13": {
+   "titre": "Multit\u00e2che \u03bb=0.5 + ajustement fin",
+   "fichier": "strat13.keras",
+   "famille": "strat\u00e9gie",
+   "multi": true,
+   "spec": {
+    "mode": "ft_complet",
+    "holter": "mt0.5",
+    "lam": 0.5
+   }
+  },
+  "strat14": {
+   "titre": "Multit\u00e2che \u03bb=2.0, tel quel",
+   "fichier": "strat14.keras",
+   "famille": "strat\u00e9gie",
+   "multi": true,
+   "spec": {
+    "mode": "zs",
+    "holter": "mt2.0",
+    "lam": 0.0
+   }
+  },
+  "strat15": {
+   "titre": "Multit\u00e2che \u03bb=2.0 + ajustement fin",
+   "fichier": "strat15.keras",
+   "famille": "strat\u00e9gie",
+   "multi": true,
+   "spec": {
+    "mode": "ft_complet",
+    "holter": "mt2.0",
+    "lam": 2.0
+   }
+  },
+  "aug_gain": {
+   "titre": "Holter + augmentation : gain seul (tel quel)",
+   "fichier": "aug_gain.keras",
+   "famille": "ablation augmentation",
+   "multi": false,
+   "spec": null
+  },
+  "aug_derive": {
+   "titre": "Holter + augmentation : d\u00e9rive seule (tel quel)",
+   "fichier": "aug_derive.keras",
+   "famille": "ablation augmentation",
+   "multi": false,
+   "spec": null
+  },
+  "aug_bruit": {
+   "titre": "Holter + augmentation : bruit seul (tel quel)",
+   "fichier": "aug_bruit.keras",
+   "famille": "ablation augmentation",
+   "multi": false,
+   "spec": null
+  },
+  "aug_secteur": {
+   "titre": "Holter + augmentation : secteur seul (tel quel)",
+   "fichier": "aug_secteur.keras",
+   "famille": "ablation augmentation",
+   "multi": false,
+   "spec": null
+  }
+ },
+ "versions": {
+  "python": "3.13.16",
+  "numpy": "2.1.3",
+  "scipy": "1.16.3",
+  "sklearn": "1.6.1",
+  "tensorflow": "2.21.0",
+  "keras": "3.13.2"
+ }
+}

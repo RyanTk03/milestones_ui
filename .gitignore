@@ -63,4 +63,3 @@ profile.json.gz
 !.codex/skills/load-github-action-thread/**
 
 .venv
-artifacts

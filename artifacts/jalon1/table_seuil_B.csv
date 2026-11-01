@@ -1,0 +1,4 @@
+graine,seuil_B,sensibilite_hors_pli,AUC_hors_pli
+42,0.233,0.985,0.997
+0,0.229,0.982,0.997
+1,0.198,0.984,0.997

@@ -1,0 +1,169 @@
+{
+ "test": {
+  "f1_macro": 0.9958639459397307,
+  "acc": 0.9966666666666667,
+  "sens_fa95": 1.0,
+  "spec_fa": 1.0,
+  "f1_classes": [
+   0.9965556831228473,
+   1.0,
+   0.9926650366748166,
+   0.9900990099009901,
+   1.0
+  ],
+  "rappel_classes": [
+   0.9977011494252873,
+   1.0,
+   0.9902439024390244,
+   0.9868421052631579,
+   1.0
+  ],
+  "cm": [
+   [
+    868,
+    0,
+    1,
+    1,
+    0
+   ],
+   [
+    0,
+    280,
+    0,
+    0,
+    0
+   ],
+   [
+    2,
+    0,
+    203,
+    0,
+    0
+   ],
+   [
+    2,
+    0,
+    0,
+    150,
+    0
+   ],
+   [
+    0,
+    0,
+    0,
+    0,
+    293
+   ]
+  ],
+  "sens_seuil_val": 0.9964285714285714,
+  "spec_seuil_val": 1.0
+ },
+ "cibles": [
+  {
+   "cible": "F1 macro \u2265 0,97",
+   "mesur\u00e9": 0.9959,
+   "atteint": true,
+   "\u00e9cart": 0.0259
+  },
+  {
+   "cible": "sens. FA @ spec 95 % \u2265 0,95",
+   "mesur\u00e9": 1.0,
+   "atteint": true,
+   "\u00e9cart": 0.05
+  },
+  {
+   "cible": "taille \u2264 2 Mo",
+   "mesur\u00e9": 0.09,
+   "atteint": true,
+   "\u00e9cart": -1.91
+  },
+  {
+   "cible": "latence \u2264 100 ms",
+   "mesur\u00e9": 19.0,
+   "atteint": true,
+   "\u00e9cart": -81.0
+  }
+ ],
+ "stabilite": {
+  "Hybride CNN+GRU": [
+   0.9959865303042763,
+   0.0018624983794785104,
+   1.0,
+   0.0
+  ],
+  "GRU battements (masqu\u00e9)": [
+   0.9399471757530561,
+   0.0091796051707635,
+   0.9607843137254902,
+   0.010480833016173507
+  ]
+ },
+ "tableau": [
+  {
+   "mod\u00e8le": "RNN simple (brut)",
+   "famille": "RNN brut",
+   "param\u00e8tres": 1253,
+   "taille float32 (Mo)": 0.005,
+   "fichier .keras (Mo)": 0.037,
+   "temps/\u00e9poque (s)": 8.5,
+   "latence/fen\u00eatre (ms)": 3292.1,
+   "F1 macro val": 0.2052,
+   "sens. FA @spec95 val": 0.063
+  },
+  {
+   "mod\u00e8le": "LSTM (brut)",
+   "famille": "RNN brut",
+   "param\u00e8tres": 4517,
+   "taille float32 (Mo)": 0.017,
+   "fichier .keras (Mo)": 0.075,
+   "temps/\u00e9poque (s)": 4.8,
+   "latence/fen\u00eatre (ms)": 25.7,
+   "F1 macro val": 0.5053,
+   "sens. FA @spec95 val": 0.2521
+  },
+  {
+   "mod\u00e8le": "CNN seul",
+   "famille": "CNN",
+   "param\u00e8tres": 174021,
+   "taille float32 (Mo)": 0.664,
+   "fichier .keras (Mo)": 2.044,
+   "temps/\u00e9poque (s)": 2.0,
+   "latence/fen\u00eatre (ms)": 14.3,
+   "F1 macro val": 0.9706,
+   "sens. FA @spec95 val": 1.0
+  },
+  {
+   "mod\u00e8le": "Hybride CNN+GRU",
+   "famille": "Hybride",
+   "param\u00e8tres": 23653,
+   "taille float32 (Mo)": 0.09,
+   "fichier .keras (Mo)": 0.322,
+   "temps/\u00e9poque (s)": 1.5,
+   "latence/fen\u00eatre (ms)": 19.0,
+   "F1 macro val": 0.9966,
+   "sens. FA @spec95 val": 1.0
+  },
+  {
+   "mod\u00e8le": "Hybride CNN+LSTM",
+   "famille": "Hybride",
+   "param\u00e8tres": 26661,
+   "taille float32 (Mo)": 0.102,
+   "fichier .keras (Mo)": 0.357,
+   "temps/\u00e9poque (s)": 1.5,
+   "latence/fen\u00eatre (ms)": 22.9,
+   "F1 macro val": 0.994,
+   "sens. FA @spec95 val": 1.0
+  },
+  {
+   "mod\u00e8le": "GRU battements (masqu\u00e9)",
+   "famille": "Battements",
+   "param\u00e8tres": 4677,
+   "taille float32 (Mo)": 0.018,
+   "fichier .keras (Mo)": 0.083,
+   "temps/\u00e9poque (s)": 1.0,
+   "latence/fen\u00eatre (ms)": 15.4,
+   "F1 macro val": 0.946,
+   "sens. FA @spec95 val": 0.9622
+  }
+ ]
+}
