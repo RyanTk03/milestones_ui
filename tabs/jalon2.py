@@ -16,6 +16,19 @@ COUL = ["#2E86AB", "#D1495B", "#EDAE49", "#66A182", "#8D6A9F"]
 AE_TITRES = {"AE_V1_calibre": "AE_V1 (conv) · bruit calibré", "AE_V2_calibre": "AE_V2 (U-Net) · bruit calibré",
              "AE_V2_depart": "AE_V2 (U-Net) · bruit de départ [contrôle]"}
 
+ICON_ALERTE, ICON_OK, ICON_WARN = ":material/notification_important:", ":material/check_circle:", ":material/warning:"
+VUES = {"demo": ":material/science: Démonstration",
+        "res": ":material/bar_chart: Résultats & expériences",
+        "theo": ":material/function: Champ réceptif"}
+
+
+def verdict(k, p, nom):
+    """Bandeau alerte / pas d'alerte sans emoji."""
+    if k != 0:
+        st.error(f"Alerte — **{nom[k]}** ({p[k]:.1%})", icon=ICON_ALERTE)
+    else:
+        st.success(f"Pas d'alerte — **{nom[k]}** ({p[k]:.1%})", icon=ICON_OK)
+
 
 @st.cache_resource(show_spinner="Chargement des modèles du jalon 2…")
 def charger():
@@ -75,6 +88,8 @@ def heat(cm, noms, titre):
 
 
 # ------------------------------------------------------------------ démonstration
+# @st.fragment : un changement de widget ne relance que ce bloc -> la page ne remonte plus en haut.
+@st.fragment
 def section_demo(cfg, res, mod, ex):
     g, d = st.columns([1, 2.3], gap="large")
     with g:
@@ -118,9 +133,9 @@ def section_demo(cfg, res, mod, ex):
         for col, titre, k, p in [(c[0], "Sans débruitage", k0, p0), (c[1], f"Avec débruitage ({AE_TITRES[ae_k].split(' ·')[0]})", k1, p1)]:
             with col:
                 st.markdown(f"**{titre}**")
-                (st.error if k != 0 else st.success)(("🚨 Alerte — " if k != 0 else "✅ Pas d'alerte — ") + f"**{NOMS2[k]}** ({p[k]:.1%})")
+                verdict(k, p, NOMS2)
         if vrai is not None:
-            st.caption(f"Rythme réel : **{NOMS2[vrai]}** — sans débruitage : {'✔' if k0 == vrai else '✘'} · avec : {'✔' if k1 == vrai else '✘'}")
+            st.caption(f"Rythme réel : **{NOMS2[vrai]}** — sans débruitage : {'correct' if k0 == vrai else 'erroné'} · avec : {'correct' if k1 == vrai else 'erroné'}")
 
         fig = go.Figure()
         fig.add_bar(name="sans débruitage", x=NOMS2, y=p0, marker_color="#B0B0B0"); fig.add_bar(name="avec débruitage", x=NOMS2, y=p1, marker_color="#2E86AB")
@@ -155,9 +170,10 @@ def section_demo(cfg, res, mod, ex):
 
 
 # ------------------------------------------------------------------ résultats
+@st.fragment
 def section_resultats(cfg, res, journal):
     q = st.segmented_control("Étape", ["Q1 · CNN vs MLP", "Q2 · Ablations", "Bruit patch", "Q3 · Auto-encodeurs", "Q4 · Débruitage", "Test final & embarquement", "Journal"],
-                             default="Q4 · Débruitage", key="j2_q")
+                             default="Q4 · Débruitage", key="j2_q") or "Q4 · Débruitage"
     if q == "Q1 · CNN vs MLP":
         t = pd.DataFrame(res["comparaison_classes"]).set_index("classe")
         fig = go.Figure([go.Bar(name=c, x=t.index, y=t[c]) for c in t.columns]); fig.update_layout(barmode="group", height=380, title="F1 par classe (validation)")
@@ -205,6 +221,7 @@ def section_resultats(cfg, res, journal):
 
 
 # ------------------------------------------------------------------ théorie
+@st.fragment
 def section_theorie(cfg, res):
     st.markdown("#### Champ réceptif : $r \\leftarrow r + (k-1)\\,d\\,j$, puis $j \\leftarrow j\\,s$ (départ $r=j=1$)")
     c = st.columns(4)
@@ -220,7 +237,8 @@ def section_theorie(cfg, res):
     ok1, ok2 = rf >= rr, rf >= 2 * rr
     (st.success if ok2 else st.warning if ok1 else st.error)(
         "Couvre 2 intervalles RR : la FA et la pause du bloc AV sont visibles par les convolutions." if ok2 else
-        "Couvre un RR mais pas deux : aucun RR n'est comparé à un autre." if ok1 else "Ne couvre même pas un intervalle RR : seule la forme d'un battement est vue.")
+        "Couvre un RR mais pas deux : aucun RR n'est comparé à un autre." if ok1 else "Ne couvre même pas un intervalle RR : seule la forme d'un battement est vue.",
+        icon=ICON_OK if ok2 else ICON_WARN)
     fig = go.Figure(); fig.add_bar(x=[rf / FS], y=["champ réceptif"], orientation="h", marker_color="#2E86AB")
     fig.add_vline(x=rr / FS, line_dash="dot", annotation_text="1 RR"); fig.add_vline(x=2 * rr / FS, line_dash="dash", annotation_text="2 RR")
     fig.update_xaxes(range=[0, 10], title="secondes (fenêtre de 10 s)"); fig.update_layout(height=170, margin=dict(l=10, r=10, t=20, b=10)); st.plotly_chart(fig, width="stretch")
@@ -231,12 +249,11 @@ def section_theorie(cfg, res):
 
 def render():
     if not (ART / "config.json").exists():
-        st.error("Artefacts du jalon 2 introuvables (`artifacts/jalon2/`).")
+        st.error("Artefacts du jalon 2 introuvables (`artifacts/jalon2/`).", icon=ICON_WARN)
         st.markdown("Exécutez la cellule `export_jalon2.py` à la fin de `jalon2.ipynb`, puis copiez `artifacts/jalon2/` à côté de `app.py`."); return
     cfg, res, mod, journal, ex = charger()
-    st.markdown("### Jalon 2 · Apprendre sur le signal brut")
     st.caption("CNN 1D sur signal normalisé par fenêtre · auto-encodeur débruiteur pour passer du Holter au patch · signaux simulés, aucune conclusion médicale.")
-    vue = st.segmented_control("Vue", ["🔬 Démonstration", "📊 Résultats & expériences", "🧮 Champ réceptif"], default="🔬 Démonstration", key="j2_vue")
-    if vue == "📊 Résultats & expériences": section_resultats(cfg, res, journal)
-    elif vue == "🧮 Champ réceptif": section_theorie(cfg, res)
+    vue = st.segmented_control("Vue", list(VUES), format_func=VUES.get, default="demo", key="j2_vue_v2") or "demo"
+    if vue == "res": section_resultats(cfg, res, journal)
+    elif vue == "theo": section_theorie(cfg, res)
     else: section_demo(cfg, res, mod, ex)
