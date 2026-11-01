@@ -172,10 +172,10 @@ Les expérimentations ont été réalisées dans l'environnement Google Colab, e
 
 | Jalon | Matériel utilisé | Temps d'exécution total (approx.) |
 |---|---|---|
-| 1 | Google Colab (GPU NVIDIA T4) | ≈ 30 min (5 graines × 5 pertes, ablation, validation croisée du seuil FA) |
-| 2 | Google Colab (GPU NVIDIA T4) | ≈ 30 min (CNN 1D, entraînement des AE, comparaisons) |
-| 3 | Google Colab (GPU NVIDIA T4) | ≈ 40 min (transfert, augmentation, multitâche) |
-| 4 | Google Colab (GPU NVIDIA T4) | ≈ 60 min (RNN, LSTM, GRU, ablation et stabilité) |
+| 1 | Google Colab (GPU NVIDIA T4) | ≈ 20 min (5 graines × 5 pertes, ablation, validation croisée du seuil FA) |
+| 2 | Google Colab (GPU NVIDIA T4) | ≈ 10 min (CNN 1D, entraînement des AE, comparaisons) |
+| 3 | Google Colab (GPU NVIDIA T4) | ≈ 15 min (transfert, augmentation, multitâche) |
+| 4 | Google Colab (GPU NVIDIA T4) | ≈ 30 min (RNN, LSTM, GRU, ablation et stabilité) |
 
 La configuration matérielle standard de Colab T4 suffit très largement pour tous les jalons. Les mesures de latence effectuées au jalon 4 portent sur ce GPU Colab, et non sur une cible embarquée réelle (comme le patch), ce qui est une limite à garder en tête.
 
