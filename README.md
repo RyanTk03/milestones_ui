@@ -34,12 +34,12 @@ L'application ne ré-entraîne rien : elle charge les modèles et les résultats
 
 Si un dossier manque, l'onglet concerné affiche les instructions au lieu de s'arrêter ; les autres onglets continuent de fonctionner.
 
-| Jalon | Cellule d'export | Ce qui est exporté |
-|---|---|---|
-| 1 | `export_jalon1.py` | modèle final, 5 modèles « perte » (CE, CE pondérée, 3 focales), 8 configurations d'ablation, normalisations, seuils A/B, tableaux, ROC |
-| 2 | `export_jalon2.py` | 8 CNN d'ablation + CNN passe-haut + CNN entraîné sur Holter bruité, MLP comparateur, 3 auto-encodeurs, résultats, bruit patch |
-| 3 | `export_jalon3.py` | toutes les stratégies d'adaptation, ré-entraînées sur les 18 patients du patch (réglages du notebook, graine 0), 4 modèles d'ablation de l'augmentation, spectres, courbe d'apprentissage |
-| 4 | `export_jalon4.py` | RNN simple, LSTM, CNN seul, hybrides CNN+GRU / CNN+LSTM, GRU sur battements (avec et sans masquage), historiques de gradients |
+| Jalon | Ce qui est exporté |
+|---|---|
+| 1 | modèle final, 5 modèles « perte » (CE, CE pondérée, 3 focales), 8 configurations d'ablation, normalisations, seuils A/B, tableaux, ROC |
+| 2 | 8 CNN d'ablation + CNN passe-haut + CNN entraîné sur Holter bruité, MLP comparateur, 3 auto-encodeurs, résultats, bruit patch |
+| 3 | toutes les stratégies d'adaptation, ré-entraînées sur les 18 patients du patch (réglages du notebook, graine 0), 4 modèles d'ablation de l'augmentation, spectres, courbe d'apprentissage |
+| 4 | RNN simple, LSTM, CNN seul, hybrides CNN+GRU / CNN+LSTM, GRU sur battements (avec et sans masquage), historiques de gradients |
 
 ## 3. Organisation de l'interface
 
@@ -47,8 +47,7 @@ Si un dossier manque, l'onglet concerné affiche les instructions au lieu de s'a
 app.py                  4 onglets : un par jalon
 tabs/jalonN.py          contenu de l'onglet N
 common/                 prétraitements copiés du notebook (features.py, signal2.py, signal3.py, signal4.py)
-export_jalonN.py        cellules d'export à coller dans les notebooks
-artifacts/jalonN/       modèles et résultats (à fournir)
+artifacts/jalonN/       modèles et résultats
 ```
 
 Chaque onglet propose **trois vues** (sélecteur en haut de l'onglet) :
@@ -111,10 +110,3 @@ Chaque onglet propose **trois vues** (sélecteur en haut de l'onglet) :
 | « 1 250 valeurs attendues » | le fichier doit contenir **une** fenêtre de 10 s à 125 Hz |
 | Avertissement « suite de battements différente » (jalon 4) | le détecteur de QRS du notebook n'est pas la version de remplacement : adapter `common/signal4.py` |
 | Premier affichage lent | chargement des modèles (mis en cache ensuite) ; le RNN simple est lent par nature |
-
-## 7. Pour la soutenance (suggestion)
-
-1. Jalon 1 : montrer une FA avec seuil B, puis un cas d'échec QRS (BAV2), et le curseur de seuil (coût clinique faux négatif / fausse alerte).
-2. Jalon 2 : un patch brut mal classé, puis débruité par l'auto-encodeur ; le calculateur de champ réceptif.
-3. Jalon 3 : « Holter tel quel » contre la stratégie retenue sur une fenêtre de patch, et le diagnostic de décalage ; la courbe d'apprentissage.
-4. Jalon 4 : la courbe de gradient du RNN simple contre l'hybride, et le tableau coût/latence pour conclure sur l'embarqué.
