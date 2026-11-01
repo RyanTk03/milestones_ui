@@ -1,7 +1,11 @@
-streamlit
-tensorflow
+# Python 3.12 (à installer séparément, non géré par requirements.txt)
 numpy
 scipy
 pandas
-plotly
 scikit-learn
+tensorflow
+keras
+streamlit
+plotly
+matplotlib
+jupyter
