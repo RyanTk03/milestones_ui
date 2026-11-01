@@ -13,6 +13,11 @@ ART = Path(__file__).resolve().parent.parent / "artifacts" / "jalon4"
 COUL = ["#2E86AB", "#D1495B", "#EDAE49", "#66A182", "#8D6A9F"]
 T_S = np.arange(N) / FS
 
+ICON_ALERTE, ICON_OK, ICON_WARN = ":material/notification_important:", ":material/check_circle:", ":material/warning:"
+VUES = {"demo": ":material/science: Démonstration",
+        "res": ":material/bar_chart: Résultats & expériences",
+        "theo": ":material/function: Vérifications théoriques"}
+
 
 @st.cache_resource(show_spinner="Chargement des modèles du jalon 4…")
 def charger():
@@ -55,6 +60,8 @@ def heat(cm, noms, titre):
 
 
 # ------------------------------------------------------------------ démonstration
+# @st.fragment : un changement de widget ne relance que ce bloc -> la page ne remonte plus en haut.
+@st.fragment
 def section_demo(cfg, res, hist, mod, ex, sc):
     g, d = st.columns([1, 2.3], gap="large")
     with g:
@@ -84,8 +91,8 @@ def section_demo(cfg, res, hist, mod, ex, sc):
     with d:
         seq, pics = suite_battements(x)
         if batt_ref is not None and not np.allclose(seq, batt_ref, atol=1e-5):
-            st.warning("⚠️ La suite de battements recalculée par l'application diffère de celle du notebook : le détecteur de QRS du notebook n'est pas la version de remplacement. "
-                       "Les exemples utilisent la suite exacte du notebook ; adaptez `common/signal4.py` pour les fichiers déposés.")
+            st.warning("La suite de battements recalculée par l'application diffère de celle du notebook : le détecteur de QRS du notebook n'est pas la version de remplacement. "
+                       "Les exemples utilisent la suite exacte du notebook ; adaptez `common/signal4.py` pour les fichiers déposés.", icon=ICON_WARN)
         sb = norm_batt(batt_ref if batt_ref is not None else seq, cfg["mu_b"], cfg["sd_b"])
         L, P = [], {}
         for kk, m in cfg["modeles"].items():
@@ -94,7 +101,10 @@ def section_demo(cfg, res, hist, mod, ex, sc):
                       "paramètres": m["params"], **{f"p({c})": round(float(v), 3) for c, v in zip(CLASSES4, p)}})
         p = P[cfg["choix"]]; kc = int(p.argmax())
         st.subheader("3 · Décision du modèle retenu")
-        (st.error if kc != 0 else st.success)(("🚨 Alerte — " if kc != 0 else "✅ Pas d'alerte — ") + f"**{CLASSES4[kc]}** ({p[kc]:.1%}) · hybride CNN+GRU")
+        if kc != 0:
+            st.error(f"Alerte — **{CLASSES4[kc]}** ({p[kc]:.1%}) · hybride CNN+GRU", icon=ICON_ALERTE)
+        else:
+            st.success(f"Pas d'alerte — **{CLASSES4[kc]}** ({p[kc]:.1%}) · hybride CNN+GRU", icon=ICON_OK)
         seuil = cfg["modeles"][cfg["choix"]]["seuil_fa"]
         c = st.columns(3); c[0].metric("Score FA", f"{p[1]:.3f}"); c[1].metric("Seuil FA (spéc. 95 % en validation)", f"{seuil:.3f}"); c[2].metric("FA au seuil ?", "oui" if p[1] >= seuil else "non")
         if vrai is not None: st.caption(f"Rythme réel : **{CLASSES4[vrai]}**")
@@ -141,9 +151,10 @@ def courbes(hist, cfg, ks, titre):
     fg.update_xaxes(title_text="époque"); fg.update_yaxes(range=[0, 1.02], row=1, col=2); fg.update_layout(height=340, title=titre, margin=dict(t=70)); return fg
 
 
+@st.fragment
 def section_resultats(cfg, res, hist, journal, sc):
     M = cfg["modeles"]; princ = [k for k in M if k != "gru_battements_sans_masque"]
-    q = st.segmented_control("Étape", ["Q1 · RNN sur le brut", "Q2 · Hybride vs CNN", "Q3 · Battements", "Q4 · Coût & embarqué", "Sélection & test", "Journal"], default="Q4 · Coût & embarqué", key="j4_q")
+    q = st.segmented_control("Étape", ["Q1 · RNN sur le brut", "Q2 · Hybride vs CNN", "Q3 · Battements", "Q4 · Coût & embarqué", "Sélection & test", "Journal"], default="Q4 · Coût & embarqué", key="j4_q") or "Q4 · Coût & embarqué"
     if q == "Q1 · RNN sur le brut":
         st.plotly_chart(courbes(hist, cfg, ["rnn_simple", "lstm_brut"], "RNN simple vs LSTM sur 1 250 pas"), width="stretch")
         a, b = st.columns(2)
@@ -195,12 +206,13 @@ def section_resultats(cfg, res, hist, journal, sc):
         for k in princ:
             fpr, tpr, _ = roc_curve(yb, sc["val_" + k][:, 1]); fg.add_scatter(x=fpr, y=tpr, name=M[k]["nom"], mode="lines")
         fg.add_vline(x=0.05, line_dash="dot", annotation_text="spécificité 95 %"); fg.update_layout(title="ROC FA (validation)", xaxis_title="1 − spécificité", yaxis_title="sensibilité", height=360); st.plotly_chart(fg, width="stretch")
-        st.warning("Signaux simulés, Holter seul : la sensibilité FA est saturée à 1,000 (ne départage pas les modèles) ; la latence vient d'un GPU, pas du matériel embarqué.")
+        st.warning("Signaux simulés, Holter seul : la sensibilité FA est saturée à 1,000 (ne départage pas les modèles) ; la latence vient d'un GPU, pas du matériel embarqué.", icon=ICON_WARN)
     else:
         st.dataframe(journal, hide_index=True, width="stretch"); st.caption("Versions : " + " · ".join(f"{k} {v}" for k, v in cfg["versions"].items()))
 
 
 # ------------------------------------------------------------------ théorie
+@st.fragment
 def section_theorie():
     st.markdown("#### Disparition / explosion du gradient : $\\lambda^{T}$")
     c = st.columns(2); lam = c[0].slider("Facteur λ par pas", 0.5, 1.2, 0.9, 0.01, key="j4_lam"); T = c[1].slider("Nombre de pas T", 10, 1250, 1250, 10, key="j4_T")
@@ -223,12 +235,11 @@ def section_theorie():
 
 def render():
     if not (ART / "config.json").exists():
-        st.error("Artefacts du jalon 4 introuvables (`artifacts/jalon4/`).")
+        st.error("Artefacts du jalon 4 introuvables (`artifacts/jalon4/`).", icon=ICON_WARN)
         st.markdown("Exécutez la cellule `export_jalon4.py` à la fin de `jalon4.ipynb`, puis copiez `artifacts/jalon4/` à côté de `app.py`."); return
     cfg, res, hist, mod, journal, ex, sc = charger()
-    st.markdown("### Jalon 4 · Le rythme est une séquence")
     st.caption("RNN simple et LSTM sur 1 250 pas, hybride CNN→GRU, GRU sur suite de battements masquée · signaux simulés, aucune conclusion médicale.")
-    vue = st.segmented_control("Vue", ["🔬 Démonstration", "📊 Résultats & expériences", "🧮 Vérifications théoriques"], default="🔬 Démonstration", key="j4_vue")
-    if vue == "📊 Résultats & expériences": section_resultats(cfg, res, hist, journal, sc)
-    elif vue == "🧮 Vérifications théoriques": section_theorie()
+    vue = st.segmented_control("Vue", list(VUES), format_func=VUES.get, default="demo", key="j4_vue_v2") or "demo"
+    if vue == "res": section_resultats(cfg, res, hist, journal, sc)
+    elif vue == "theo": section_theorie()
     else: section_demo(cfg, res, hist, mod, ex, sc)

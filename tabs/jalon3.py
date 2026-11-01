@@ -12,6 +12,19 @@ from common.signal3 import (FS, N, NOMS3, T_S, TOUTES, normaliser_fenetres, augm
 ART = Path(__file__).resolve().parent.parent / "artifacts" / "jalon3"
 LIB_AUG = {"gain": "gain", "derive": "dérive de ligne de base", "bruit": "bruit large bande", "secteur": "secteur 50 Hz"}
 
+ICON_ALERTE, ICON_OK, ICON_WARN = ":material/notification_important:", ":material/check_circle:", ":material/warning:"
+VUES = {"demo": ":material/science: Démonstration",
+        "res": ":material/bar_chart: Résultats & expériences",
+        "theo": ":material/function: Vérifications théoriques"}
+
+
+def verdict(kk, p, nom):
+    """Bandeau alerte / pas d'alerte sans emoji."""
+    if kk != 0:
+        st.error(f"Alerte — **{nom[kk]}** ({p[kk]:.1%})", icon=ICON_ALERTE)
+    else:
+        st.success(f"Pas d'alerte — **{nom[kk]}** ({p[kk]:.1%})", icon=ICON_OK)
+
 
 @st.cache_resource(show_spinner="Chargement des modèles du jalon 3…")
 def charger():
@@ -53,6 +66,8 @@ def cle_par_titre(cfg, titre): return next((k for k, v in cfg["modeles"].items()
 
 
 # ------------------------------------------------------------------ démonstration
+# @st.fragment : un changement de widget ne relance que ce bloc -> la page ne remonte plus en haut.
+@st.fragment
 def section_demo(cfg, res, mod, ex, sp):
     g, d = st.columns([1, 2.3], gap="large")
     with g:
@@ -96,9 +111,9 @@ def section_demo(cfg, res, mod, ex, sp):
         for col, titre, kk, p in [(c[0], "Holter tel quel (sans adaptation)", a, p_ref), (c[1], cfg["modeles"][cle]["titre"], b, p_sel)]:
             with col:
                 st.markdown(f"**{titre}**")
-                (st.error if kk != 0 else st.success)(("🚨 Alerte — " if kk != 0 else "✅ Pas d'alerte — ") + f"**{NOMS3[kk]}** ({p[kk]:.1%})")
+                verdict(kk, p, NOMS3)
         if vrai is not None and vrai >= 0:
-            st.caption(f"Rythme réel : **{NOMS3[vrai]}** — sans adaptation : {'✔' if a == vrai else '✘'} · stratégie choisie : {'✔' if b == vrai else '✘'}")
+            st.caption(f"Rythme réel : **{NOMS3[vrai]}** — sans adaptation : {'correct' if a == vrai else 'erroné'} · stratégie choisie : {'correct' if b == vrai else 'erroné'}")
         fig = go.Figure(); fig.add_bar(name="Holter tel quel", x=NOMS3, y=p_ref, marker_color="#B0B0B0"); fig.add_bar(name="modèle choisi", x=NOMS3, y=p_sel, marker_color="#2E86AB")
         fig.update_layout(barmode="group", height=240, margin=dict(l=10, r=10, t=10, b=10), yaxis=dict(range=[0, 1.05], title="probabilité")); st.plotly_chart(fig, width="stretch")
         if fc_sel is not None:
@@ -123,8 +138,8 @@ def section_demo(cfg, res, mod, ex, sp):
             plus_proche = "Holter" if abs(np.log((abs(val) + 1e-6) / (abs(h) + 1e-6))) < abs(np.log((abs(val) + 1e-6) / (abs(p) + 1e-6))) else "patch"
             if nom.startswith(("crête", "rapport", "aplat")): votes.append(plus_proche)
             L.append({"mesure": nom, "cette fenêtre": round(val, 4), "Holter (moy.)": round(h, 4), "patch (moy.)": round(p, 4), "plus proche de": plus_proche})
-        verdict = "patch" if votes.count("patch") > votes.count("Holter") else "Holter"
-        st.markdown(f"**Diagnostic de décalage de domaine** — amplitude, rapport signal/bruit et morphologie évoquent plutôt un enregistrement de type **{verdict}** (indicatif, fenêtre isolée).")
+        verdict_dom = "patch" if votes.count("patch") > votes.count("Holter") else "Holter"
+        st.markdown(f"**Diagnostic de décalage de domaine** — amplitude, rapport signal/bruit et morphologie évoquent plutôt un enregistrement de type **{verdict_dom}** (indicatif, fenêtre isolée).")
         st.dataframe(pd.DataFrame(L), hide_index=True, width="stretch")
         with st.expander("Comparer toutes les stratégies sur cette fenêtre"):
             rows = []
@@ -135,9 +150,10 @@ def section_demo(cfg, res, mod, ex, sp):
 
 
 # ------------------------------------------------------------------ résultats
+@st.fragment
 def section_resultats(cfg, res, journal, sp):
     T = res["_tables"]; R = {k: v for k, v in res.items() if k != "_tables"}
-    q = st.segmented_control("Étape", ["Q3 · Décalage", "Q1 · Stratégies", "Q2 · Augmentation", "Q4 · Multitâche (λ)", "Choix, test & annotation", "Journal"], default="Q1 · Stratégies", key="j3_q")
+    q = st.segmented_control("Étape", ["Q3 · Décalage", "Q1 · Stratégies", "Q2 · Augmentation", "Q4 · Multitâche (λ)", "Choix, test & annotation", "Journal"], default="Q1 · Stratégies", key="j3_q") or "Q1 · Stratégies"
     if q == "Q3 · Décalage":
         df = pd.DataFrame(T["carac"]).set_index("index"); st.dataframe(df.round(4), width="stretch")
         a, b = st.columns(2); f = sp["f"][1:]
@@ -188,7 +204,7 @@ def section_resultats(cfg, res, journal, sp):
         st.caption(f"IC 95 % (bootstrap par patient) du F1 patch : [{T['ic_test'][0]:.3f} ; {T['ic_test'][1]:.3f}] — test utilisé une seule fois.")
         a, b = st.columns(2); a.plotly_chart(heat(T["cm_test"], "Modèle retenu — test patch"), width="stretch")
         fg = go.Figure(go.Bar(x=NOMS3, y=T["rappels_test"], marker_color="#2E86AB")); fg.update_yaxes(range=[0, 1.05], title="rappel"); fg.update_layout(title="Rappel par classe (test patch)", height=380); b.plotly_chart(fg, width="stretch")
-        st.warning("Erreur dominante : fausses alertes sur le rythme sinusal (≈ 32 % des fenêtres sinusales du patch).")
+        st.warning("Erreur dominante : fausses alertes sur le rythme sinusal (≈ 32 % des fenêtres sinusales du patch).", icon=ICON_WARN)
         cb = pd.DataFrame(T["courbe"]); fg = go.Figure()
         for n, c in [("stratégie retenue", "#2E86AB"), ("patch seul", "#EDAE49")]:
             g = cb[cb["stratégie"] == n]; fg.add_scatter(x=g["n_patients"], y=g["mean"], error_y=dict(array=g["std"].fillna(0)), mode="lines+markers", name=n, line=dict(color=c))
@@ -204,6 +220,7 @@ def section_resultats(cfg, res, journal, sp):
 
 
 # ------------------------------------------------------------------ théorie
+@st.fragment
 def section_theorie(cfg, mod, ex):
     st.markdown("#### Normalisation par fenêtre : $z=(x-\\mu)/\\sigma$ est insensible à $x'=a\\,x+b$ ($a>0$)")
     c = st.columns(4)
@@ -215,9 +232,9 @@ def section_theorie(cfg, mod, ex):
     cle = cle_par_titre(cfg, "Holter tel quel") or list(cfg["modeles"])[0]
     p0, p1 = sortie(cfg, mod[cle], z0)[0], sortie(cfg, mod[cle], z1)[0]
     m = st.columns(2); m[0].metric("max |z' − z|", f"{np.abs(z1 - z0).max():.2e}"); m[1].metric("max |p' − p|", f"{np.abs(p1 - p0).max():.2e}")
-    if a > 0 and bruit == 0: st.success("a > 0, pas de bruit : z' = z, probabilités identiques (au ε = 1e-6 près).")
-    elif a < 0: st.error("a < 0 (inversion de polarité) : z' = −z, pas d'invariance.")
-    elif bruit > 0: st.warning("Un bruit d'amplitude absolue fixe n'est pas mis à l'échelle comme le signal : le gain modifie le rapport signal/bruit, donc z.")
+    if a > 0 and bruit == 0: st.success("a > 0, pas de bruit : z' = z, probabilités identiques (au ε = 1e-6 près).", icon=ICON_OK)
+    elif a < 0: st.error("a < 0 (inversion de polarité) : z' = −z, pas d'invariance.", icon=ICON_WARN)
+    elif bruit > 0: st.warning("Un bruit d'amplitude absolue fixe n'est pas mis à l'échelle comme le signal : le gain modifie le rapport signal/bruit, donc z.", icon=ICON_WARN)
     fg = go.Figure(); fg.add_scatter(x=T_S, y=z0[0, :, 0], name="z (original)", line=dict(width=1)); fg.add_scatter(x=T_S, y=z1[0, :, 0], name="z' (transformé)", line=dict(width=1, dash="dot"))
     fg.update_layout(height=280, margin=dict(l=10, r=10, t=10, b=10)); st.plotly_chart(fg, width="stretch")
 
@@ -233,12 +250,11 @@ def section_theorie(cfg, mod, ex):
 
 def render():
     if not (ART / "config.json").exists():
-        st.error("Artefacts du jalon 3 introuvables (`artifacts/jalon3/`).")
+        st.error("Artefacts du jalon 3 introuvables (`artifacts/jalon3/`).", icon=ICON_WARN)
         st.markdown("Exécutez la cellule `export_jalon3.py` à la fin de `jalon3.ipynb`, puis copiez `artifacts/jalon3/` à côté de `app.py`."); return
     cfg, res, mod, journal, ex, sp = charger()
-    st.markdown("### Jalon 3 · Du Holter au patch")
     st.caption("Décalage de domaine, extraction de caractéristiques, ajustement fin, augmentation et multitâche (rythme + fréquence cardiaque) · signaux simulés, aucune conclusion médicale.")
-    vue = st.segmented_control("Vue", ["🔬 Démonstration", "📊 Résultats & expériences", "🧮 Vérifications théoriques"], default="🔬 Démonstration", key="j3_vue")
-    if vue == "📊 Résultats & expériences": section_resultats(cfg, res, journal, sp)
-    elif vue == "🧮 Vérifications théoriques": section_theorie(cfg, mod, ex)
+    vue = st.segmented_control("Vue", list(VUES), format_func=VUES.get, default="demo", key="j3_vue_v2") or "demo"
+    if vue == "res": section_resultats(cfg, res, journal, sp)
+    elif vue == "theo": section_theorie(cfg, mod, ex)
     else: section_demo(cfg, res, mod, ex, sp)

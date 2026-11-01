@@ -14,6 +14,11 @@ from common.features import (FS, N_POINTS, NOMS, NOMS_LONGS, GROUPES, detecter_q
 ART = Path(__file__).resolve().parent.parent / "artifacts" / "jalon1"
 COULEURS = ["#2E86AB", "#D1495B", "#EDAE49", "#66A182", "#8D6A9F"]   # une couleur par rythme
 
+ICON_ALERTE, ICON_OK, ICON_WARN = ":material/notification_important:", ":material/check_circle:", ":material/warning:"
+VUES = {"demo": ":material/science: Démonstration",
+        "res": ":material/bar_chart: Résultats & expériences",
+        "theo": ":material/function: Vérifications théoriques"}
+
 
 # --------------------------------------------------------------------------- chargement
 @st.cache_resource(show_spinner="Chargement des modèles du jalon 1…")
@@ -144,6 +149,8 @@ def lecture_clinique(k, feats, fc_detectee):
 
 
 # --------------------------------------------------------------------------- sections
+# @st.fragment : un changement de widget ne relance que ce bloc -> la page ne remonte plus en haut.
+@st.fragment
 def section_demo(cfg, modeles, tab, res, ex):
     gauche, droite = st.columns([1, 2.2], gap="large")
     with gauche:
@@ -184,7 +191,7 @@ def section_demo(cfg, modeles, tab, res, ex):
         choix = st.radio("Seuil d'alerte FA", [f"B – hors pli (retenu) : {cfg['seuil_B']:.3f}", f"A – validation seule : {cfg['seuil_A']:.3f}", "Manuel"], key="j1_seuil")
         seuil = cfg["seuil_B"] if choix.startswith("B") else cfg["seuil_A"] if choix.startswith("A") else st.slider("Seuil", 0.0, 1.0, float(cfg["seuil_B"]), 0.005, key="j1_man")
         if cle != "final":
-            st.caption("⚠️ Les seuils A/B ont été calibrés pour le modèle retenu uniquement ; sur un modèle auxiliaire ils ne garantissent pas 95 % de spécificité.")
+            st.caption(":material/warning: Les seuils A/B ont été calibrés pour le modèle retenu uniquement ; sur un modèle auxiliaire ils ne garantissent pas 95 % de spécificité.")
 
     with droite:
         feats = calculer_features(x.tobytes(), float(age), float(sexe), cfg["k_mad"])
@@ -194,19 +201,20 @@ def section_demo(cfg, modeles, tab, res, ex):
         st.subheader("3 · Décision")
         if signalee:
             motif = "classe prédite ≠ sinusal" if k != 0 else f"score FA {p[1]:.3f} > seuil {seuil:.3f}"
-            st.error(f"🚨 **ALERTE transmise au cardiologue** — {NOMS_LONGS[k] if k else 'rythme sinusal, mais score FA au-dessus du seuil'} ({motif})")
+            st.error(f"**Alerte transmise au cardiologue** — {NOMS_LONGS[k] if k else 'rythme sinusal, mais score FA au-dessus du seuil'} ({motif})", icon=ICON_ALERTE)
         else:
-            st.success("✅ **Pas d'alerte** — rythme sinusal, score FA sous le seuil")
+            st.success("**Pas d'alerte** — rythme sinusal, score FA sous le seuil", icon=ICON_OK)
         c = st.columns(4)
         c[0].metric("Rythme prédit", NOMS[k], f"{p[k]:.1%}", delta_color="off", delta_arrow="off")
         c[1].metric("Score FA", f"{p[1]:.3f}", f"seuil {seuil:.3f}", delta_color="inverse" if p[1] > seuil else "off", delta_arrow="off")
         c[2].metric("FC détectée", f"{fc_det:.0f} bpm", f"annotée {fc_annotee:.0f}" if fc_annotee else None, delta_color="off", delta_arrow="off")
         c[3].metric("QRS détectés", len(pics))
         if vrai is not None:
-            (st.success if vrai == k else st.warning)(f"Rythme réel (annotation) : **{NOMS_LONGS[vrai]}** — " + ("prédiction correcte." if vrai == k else "prédiction différente."))
+            (st.success if vrai == k else st.warning)(f"Rythme réel (annotation) : **{NOMS_LONGS[vrai]}** — " + ("prédiction correcte." if vrai == k else "prédiction différente."),
+                                                       icon=ICON_OK if vrai == k else ICON_WARN)
         if fc_annotee and abs(len(pics) * 6 - fc_annotee) / fc_annotee > 0.25:
-            st.warning(f"⚠️ **Détection QRS suspecte** : {len(pics)} pics ×6 = {len(pics)*6} bpm contre {fc_annotee:.0f} bpm annotés. "
-                       "Sur-comptage typique des BAV2 (ondes P non conduites prises pour des QRS) : les descripteurs RR sont faussés, prudence sur la prédiction.")
+            st.warning(f"**Détection QRS suspecte** : {len(pics)} pics ×6 = {len(pics)*6} bpm contre {fc_annotee:.0f} bpm annotés. "
+                       "Sur-comptage typique des BAV2 (ondes P non conduites prises pour des QRS) : les descripteurs RR sont faussés, prudence sur la prédiction.", icon=ICON_WARN)
         st.plotly_chart(graphique_signal(x, pics), width="stretch")
         a, b = st.columns([1.1, 1])
         with a:
@@ -230,9 +238,10 @@ def section_demo(cfg, modeles, tab, res, ex):
             st.dataframe(pd.DataFrame({g: pd.Series(v) for g, v in feats.items()}).T.round(4), width="stretch")
 
 
+@st.fragment
 def section_resultats(cfg, tab, res):
     st.markdown("Tous les chiffres viennent du notebook (validation, 5 graines) ; le test a été utilisé **une seule fois** pour le modèle retenu.")
-    q = st.segmented_control("Étape", ["Q1 · Référence", "Q2 · Pertes", "Q3 · Ablation", "Q4 · Seuil FA", "Test final", "Journal"], default="Q2 · Pertes", key="j1_q")
+    q = st.segmented_control("Étape", ["Q1 · Référence", "Q2 · Pertes", "Q3 · Ablation", "Q4 · Seuil FA", "Test final", "Journal"], default="Q2 · Pertes", key="j1_q") or "Q2 · Pertes"
     if q == "Q1 · Référence":
         a, b = st.columns(2)
         a.plotly_chart(heatmap_cm(res["cm_ref"], "MLP de référence (11 descripteurs, CE pondérée) — validation"), width="stretch")
@@ -286,13 +295,14 @@ def section_resultats(cfg, tab, res):
         a.plotly_chart(heatmap_cm(res["cm_test"], "Modèle retenu — test (utilisé une seule fois)"), width="stretch")
         b.dataframe(c.round(3), hide_index=True, width="stretch")
         b.markdown(f"Sinus non signalés : règle retenue **{res['sinus'][0]:.3f}** · argmax seul {res['sinus'][1]:.3f} · score FA seul {res['sinus'][2]:.3f}")
-        b.warning("La cible « sinus non signalés ≥ 0,97 » n'est pas atteinte : l'écart vient du modèle/descripteurs (fenêtres sinusales classées FA ou BAV2), pas du calibrage du seuil.")
+        b.warning("La cible « sinus non signalés ≥ 0,97 » n'est pas atteinte : l'écart vient du modèle/descripteurs (fenêtres sinusales classées FA ou BAV2), pas du calibrage du seuil.", icon=ICON_WARN)
     else:
         st.dataframe(tab["journal"], hide_index=True, width="stretch")
         st.markdown("**Comparaison arrêt précoce**"); st.dataframe(tab["es"].round(3))
         st.caption("Versions : " + " · ".join(f"{k} {v}" for k, v in cfg["versions"].items()))
 
 
+@st.fragment
 def section_theorie(cfg):
     st.markdown("#### Poids de classes  $w_k = N / (K\\,N_k)$")
     Nk = np.array(cfg["effectifs_train"], float); N, K = Nk.sum(), 5
@@ -303,7 +313,7 @@ def section_theorie(cfg):
     p = np.array([c.number_input(NOMS[i], 0.0, 1.0, defaut[i], 0.01, key=f"j1_p{i}") for i, c in enumerate(cols)])
     vraie = st.selectbox("Vraie classe", range(5), index=1, format_func=lambda k: NOMS_LONGS[k], key="j1_vraie")
     if abs(p.sum() - 1) > 1e-6:
-        st.error(f"Somme des probabilités = {p.sum():.3f} ≠ 1."); return
+        st.error(f"Somme des probabilités = {p.sum():.3f} ≠ 1.", icon=ICON_WARN); return
     y = np.eye(5)[vraie]
     st.latex(rf"L = -\ln p_{{{vraie}}} = {-np.log(max(p[vraie], 1e-12)):.4f}")
     st.dataframe(pd.DataFrame([(p - y).round(3)], columns=NOMS, index=["p − y"]))
@@ -312,17 +322,16 @@ def section_theorie(cfg):
 
 def render():
     if not (ART / "config.json").exists():
-        st.error("Artefacts du jalon 1 introuvables (`artifacts/jalon1/`).")
+        st.error("Artefacts du jalon 1 introuvables (`artifacts/jalon1/`).", icon=ICON_WARN)
         st.markdown("Exécutez la cellule d'export `export_jalon1.py` à la fin de `jalon1.ipynb`, puis copiez le dossier `artifacts/jalon1/` à côté de `app.py`.")
         return
     cfg, modeles, tab, res, ex = charger()
-    st.markdown("### Jalon 1 · Des descripteurs à la décision")
     st.caption("MLP sur descripteurs d'intervalles RR · perte adaptée aux classes déséquilibrées · seuil d'alerte FA choisi selon le coût clinique. "
                "Signaux simulés : aucune conclusion médicale.")
-    vue = st.segmented_control("Vue", ["🔬 Démonstration", "📊 Résultats & expériences", "🧮 Vérifications théoriques"], default="🔬 Démonstration", key="j1_vue")
-    if vue == "📊 Résultats & expériences":
+    vue = st.segmented_control("Vue", list(VUES), format_func=VUES.get, default="demo", key="j1_vue_v2") or "demo"
+    if vue == "res":
         section_resultats(cfg, tab, res)
-    elif vue == "🧮 Vérifications théoriques":
+    elif vue == "theo":
         section_theorie(cfg)
     else:
         section_demo(cfg, modeles, tab, res, ex)
