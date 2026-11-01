@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="CardioPatch",
     page_icon=":material/monitor_heart:",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 # ---------- Icons (inline SVG, Lucide-style) ----------
@@ -194,25 +194,6 @@ st.markdown(
         box-shadow: 0 8px 22px -8px rgba(255,61,104,.7);
     }
 
-    /* ---------- Sidebar ---------- */
-    section[data-testid="stSidebar"] { background: #0e0e15; border-right: 1px solid var(--border); }
-    section[data-testid="stSidebar"] > div { padding-top: 1.4rem; }
-    .sb-brand { display: flex; align-items: center; gap: .7rem; }
-    .sb-brand .logo { width: 38px; height: 38px; border-radius: 11px; }
-    .sb-brand b { font-size: 1.1rem; letter-spacing: -0.02em; display: block; line-height: 1.1; }
-    .sb-brand small { color: var(--muted); font-size: .75rem; }
-    .sb-label { margin: 1.8rem 0 .8rem; font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-    .sb-course { display: flex; gap: .7rem; align-items: flex-start; color: rgba(255,255,255,.8); font-size: .88rem; line-height: 1.35; }
-    .sb-course svg { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
-    .step { display: flex; align-items: center; gap: .8rem; padding: .5rem 0; position: relative; font-size: .88rem; color: rgba(255,255,255,.8); }
-    .step .dot {
-        width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0;
-        font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: var(--accent);
-        background: rgba(255,61,104,.1); border: 1px solid rgba(255,61,104,.3);
-    }
-    .step:not(:last-child)::after {
-        content: ""; position: absolute; left: 12.5px; top: 34px; width: 1px; height: 18px; background: var(--border);
-    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -220,29 +201,6 @@ st.markdown(
 
 # ---------- Scroll fix (all jalons) ----------
 keep_scroll_position()
-
-# ---------- Sidebar ----------
-with st.sidebar:
-    st.markdown(
-        f"""
-        <div class="sb-brand">
-            <div class="logo">{svg(HEART_PULSE, 20)}</div>
-            <div><b>CardioPatch</b><small>Télésurveillance cardiaque</small></div>
-        </div>
-
-        <div class="sb-label">Cours</div>
-        <div class="sb-course">{svg(GRAD_CAP, 18)}
-            <div><b>M2 SDIA</b><br>Advanced Artificial Intelligence<br>Étude de cas 3</div>
-        </div>
-
-        <div class="sb-label">Parcours</div>
-        <div class="step"><div class="dot">01</div>Descripteurs → décision</div>
-        <div class="step"><div class="dot">02</div>Signal brut</div>
-        <div class="step"><div class="dot">03</div>Holter → patch</div>
-        <div class="step"><div class="dot">04</div>Séquences</div>
-        """,
-        unsafe_allow_html=True,
-    )
 
 # ---------- Hero ----------
 ECG = (
