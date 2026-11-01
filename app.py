@@ -194,6 +194,9 @@ st.markdown(
         box-shadow: 0 8px 22px -8px rgba(255,61,104,.7);
     }
 
+div[data-testid="stMetric"] { padding: .9rem 1rem; }
+div[data-testid="stMetricValue"] { font-size: clamp(1.2rem, 1.9vw, 1.8rem) !important; }
+div[data-testid="stMetricValue"] > div { overflow: visible !important; text-overflow: clip !important; white-space: normal !important; }
     </style>
     """,
     unsafe_allow_html=True,
